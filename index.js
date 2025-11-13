@@ -10,7 +10,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
-const from = 'whatsapp:+13185839825';
+const from = 'whatsapp:+15557864742';
 const templateCarrusel = process.env.TWILIO_TEMPLATE_CARRUSEL_SID; // Tu template de carrusel
 
 // ============================================
