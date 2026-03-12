@@ -10,8 +10,8 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
-const from = 'whatsapp:+15513864385';
-const templateCarrusel = process.env.TWILIO_TEMPLATE_CARRUSEL_SID; // Tu template de carrusel
+const twilioFrom = 'whatsapp:+15513864385';
+const templateCarrusel = 'HXeae8e723e246cc89fae40b411534a723';
 
 // ============================================
 // ENDPOINT: SOLO ENVIAR CARRUSEL DE BIENVENIDA
@@ -19,51 +19,49 @@ const templateCarrusel = process.env.TWILIO_TEMPLATE_CARRUSEL_SID; // Tu templat
 app.post('/send-template', async (req, res) => {
   try {
     console.log('📥 Webhook recibido desde Zapier:', req.body);
-    
+
     let phoneNumber = req.body.phone || req.body.phoneNumber || req.body.phone_number;
-    
+
     if (!phoneNumber) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: 'No se proporcionó número de teléfono',
-        received: req.body 
+        received: req.body
       });
     }
-    
-    // Formatear número
+
     phoneNumber = phoneNumber.trim().replace(/\s+/g, '');
-    
+
     if (!phoneNumber.startsWith('+')) {
       phoneNumber = '+521' + phoneNumber;
     }
-    
+
     if (phoneNumber.startsWith('+52') && !phoneNumber.startsWith('+521')) {
       phoneNumber = phoneNumber.replace('+52', '+521');
     }
-    
+
     console.log(`📤 Enviando carrusel de bienvenida a: ${phoneNumber}`);
-    
-    // SOLO ENVIAR EL TEMPLATE DE CARRUSEL
+
     const message = await client.messages.create({
-      from,
+      from: twilioFrom,
       to: `whatsapp:${phoneNumber}`,
       contentSid: templateCarrusel,
     });
-    
+
     console.log(`✅ Carrusel enviado | SID: ${message.sid}`);
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       messageSid: message.sid,
       to: phoneNumber,
       status: message.status,
       message: 'Carrusel enviado - Bot IA tomará el control cuando responda'
     });
-    
+
   } catch (error) {
     console.error('❌ Error:', error.message);
-    res.status(500).json({ 
+    res.status(500).json({
       error: error.message,
-      code: error.code 
+      code: error.code
     });
   }
 });
@@ -72,7 +70,7 @@ app.post('/send-template', async (req, res) => {
 // HEALTH CHECK
 // ============================================
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     status: 'active',
     service: 'Novach AI - WhatsApp Lead Automation',
     endpoints: ['/send-template']
