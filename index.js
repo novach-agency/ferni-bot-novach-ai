@@ -10,8 +10,8 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
-const twilioFrom = 'whatsapp:+15513864385';
-const templateCarrusel = 'HXeae8e723e246cc89fae40b411534a723';
+const twilioFrom = 'whatsapp:+15557864742';
+const templateCarrusel = 'HX0d093672f05851ce20af48d7df779878';
 
 // ============================================
 // ENDPOINT: SOLO ENVIAR CARRUSEL DE BIENVENIDA
